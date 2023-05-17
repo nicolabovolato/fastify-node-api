@@ -1,8 +1,8 @@
-# Fastify API
+# Fastify Node API
 
-[![CI](https://github.com/nicola-bovolato/fastify-api/actions/workflows/ci.yaml/badge.svg)](https://github.com/nicola-bovolato/fastify-api/actions/workflows/ci.yaml)
+[![CI](https://github.com/nicolabovolato/fastify-node-api/actions/workflows/ci.yaml/badge.svg)](https://github.com/nicolabovolato/fastify-node-api/actions/workflows/ci.yaml)
 
-Showcasing fastify in a modern Node.js project.
+Showcasing Fastify in a modern Node.js project.
 
 ![](thumbnail.png)
 
