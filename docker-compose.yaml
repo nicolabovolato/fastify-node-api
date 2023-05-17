@@ -1,0 +1,39 @@
+version: '3.9'
+
+services:
+  
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: db
+  
+  cache:
+    image: redis:7-alpine
+  
+  api:
+    build: .
+    environment:
+      PASETO_PUBLIC_KEY: |
+        -----BEGIN PUBLIC KEY-----
+        MCowBQYDK2VwAyEARCsnT9JAkaWG+6BlBeJTKUmZY+xmn+xdwINSS4dhVHM=
+        -----END PUBLIC KEY-----
+      PASETO_PRIVATE_KEY: |
+        -----BEGIN PRIVATE KEY-----
+        MC4CAQAwBQYDK2VwBCIEIGgU582FmEz0i76AVAKH3NRcT+3fZu/SSXdhoFdzWfuH
+        -----END PRIVATE KEY-----
+      DATABASE_URL: postgres://user:pass@db:5432/postgres?sslmode=disable
+      CACHE_URL: redis://cache:6379/0
+      QUEUE_URL: redis://cache:6379/1
+      EXPOSE_OPENAPI: true
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+    ports:
+      - 80:80
+    depends_on:
+      - db
+      - cache

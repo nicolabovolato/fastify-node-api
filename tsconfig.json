@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "CommonJS",
+    "lib": ["ES2022"],
+    "strict": true,
+
+    "esModuleInterop": true, // required by vitest
+    "resolveJsonModule": true,
+
+    "inlineSourceMap": true,
+    "noEmit": true,
+
+    "baseUrl": ".",
+    "paths": {
+      "src/*": ["./src/*"],
+      "test/*": ["./test/*"]
+    }
+  }
+}
