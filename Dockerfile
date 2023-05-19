@@ -17,5 +17,6 @@ COPY package.json pnpm-lock.yaml ./
 COPY --from=build /app/dist ./dist
 RUN pnpm install --frozen-lockfile --prod
 
+USER node
 EXPOSE 80
 ENTRYPOINT [ "pnpm", "start" ]
