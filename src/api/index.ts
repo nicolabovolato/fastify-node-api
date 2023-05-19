@@ -34,6 +34,7 @@ export class FastifyApi {
     this.server = fastify({
       logger: logger,
       ignoreTrailingSlash: true,
+      exposeHeadRoutes: false,
     });
 
     this.server.setErrorHandler(errorHandler);
