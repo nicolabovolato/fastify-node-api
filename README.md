@@ -18,6 +18,7 @@ Showcasing Fastify in a modern Node.js project.
 - `Node.js`
 - `Typescript`
 - `SWC`
+- `pnpm`
 
 ### Libraries
 
