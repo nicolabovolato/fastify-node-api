@@ -30,7 +30,7 @@ export default {
     db: {
       connectionString:
         process.env.DATABASE_URL || "postgres://user:pass@localhost:5432/db",
-      timeout: Number(process.env.CACHE_TIMEOUT_MS || 5000),
+      timeout: Number(process.env.DATABASE_TIMEOUT_MS || 5000),
     },
     cache: {
       connectionString: process.env.CACHE_URL || "redis://localhost:6379/0",
