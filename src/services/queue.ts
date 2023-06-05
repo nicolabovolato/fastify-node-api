@@ -48,8 +48,9 @@ export class BullQueue implements IQueueService {
 
     this.worker.on(
       "completed",
-      (job: BullMQJob<Omit<Job, "id">, JobResult>, result: JobResult) =>
-        this.completedListener?.(job.name, result)
+      (job: BullMQJob<Omit<Job, "id">, JobResult>, result: JobResult) => {
+        if (job.id) this.completedListener?.(job.id, result);
+      }
     );
     this.worker.on(
       "failed",
@@ -57,27 +58,25 @@ export class BullQueue implements IQueueService {
         job: BullMQJob<Omit<Job, "id">, JobResult> | undefined,
         error: Error
       ) => {
-        if (job) this.failedListener?.(job.name, error);
+        if (job && job.id) this.failedListener?.(job.id, error);
       }
     );
   }
 
   private async processJob(job: BullMQJob<Omit<Job, "id">, JobResult>) {
+    if (!job.id) throw new UnrecoverableError(`job has no id`);
     if (this.processListener == null)
-      throw new UnrecoverableError(`missing listener for job ${job.name}`);
-    return await this.processListener({ id: job.name, ...job.data });
+      throw new UnrecoverableError(`missing listener for job ${job.id}`);
+    return await this.processListener({ id: job.id, ...job.data });
   }
 
   async add(job: Omit<Job, "id">) {
     const id = randomUUID();
-    await this.queue.add(
-      id,
-      { data: job.data, operation: job.operation },
-      {
-        removeOnComplete: true,
-        removeOnFail: true,
-      }
-    );
+    await this.queue.add("job", job, {
+      jobId: id,
+      removeOnComplete: true,
+      removeOnFail: true,
+    });
     return id;
   }
 

@@ -32,8 +32,8 @@ describe("Bullmq queue service", () => {
       queue.onProcess(listener);
 
       const result = await queue["processJob"]({
-        name: job.id,
         data: { data: job.data, operation: job.operation },
+        id: job.id,
       } as BullMQJob<Omit<Job, "id">, JobResult>);
 
       expect(result).toEqual(10);
@@ -44,8 +44,8 @@ describe("Bullmq queue service", () => {
     test("fails when listener is not set", async () => {
       await expect(
         new BullQueue(config, logger)["processJob"]({
-          name: "id",
           data: { data: [1, 2, 3], operation: "add" },
+          id: "id",
         } as BullMQJob<Omit<Job, "id">, JobResult>)
       ).rejects.toThrowError(UnrecoverableError);
     });
